@@ -111,7 +111,9 @@ variable "role_association" {
   description = "List of user/group IDs to assocaite to a role"
 
   validation {
-    condition     = alltrue([for v in var.role_association : contains(["ADMIN", "EDITOR", "VIEWER"], v.role)])
+    condition = alltrue([
+      for v in var.role_association : contains(["ADMIN", "EDITOR", "VIEWER"], v.role)
+    ])
     error_message = "Valid values are \"ADMIN\" or \"EDITOR\" or \"VIEWER\"."
   }
 }
