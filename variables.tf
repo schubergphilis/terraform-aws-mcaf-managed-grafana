@@ -48,8 +48,13 @@ variable "description" {
 
 variable "grafana_version" {
   type        = string
-  default     = "10"
-  description = "Specifies the version of Grafana to support in the new workspace. If not specified, the default version for the `aws_grafana_workspace` resource will be used. See `aws_grafana_workspace` documentation for available options."
+  default     = "10.4"
+  description = "Specifies the version of Grafana to support in the new workspace."
+
+  validation {
+    condition     = contains(["8.4", "9.4", "10.4"], var.grafana_version)
+    error_message = "Valid values are \"8.4\", \"9.4\" or \"10.4\"."
+  }
 }
 
 variable "iam_role_arn" {
@@ -135,6 +140,11 @@ variable "saml_configuration" {
   })
   default     = null
   description = "The SAML configuration for the workspace"
+
+  validation {
+    condition     = (contains(["SAML"], var.authentication_providers) && var.saml_configuration != null) || (!contains(["SAML"], var.authentication_providers) && var.saml_configuration == null)
+    error_message = "If SAML is specified in authentication_providers, then saml_configuration must be configured"
+  }
 }
 
 variable "vpc_configuration" {
@@ -158,5 +168,6 @@ variable "workspace_api_key" {
 
 variable "tags" {
   type        = map(string)
+  default     = {}
   description = "A mapping of tags to assign to the resources"
 }
