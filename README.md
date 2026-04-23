@@ -7,13 +7,13 @@ Terraform module to create and manage Amazon Managed Grafana
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
 
 ## Modules
 
@@ -49,6 +49,7 @@ Terraform module to create and manage Amazon Managed Grafana
 | <a name="input_organization_role_name"></a> [organization\_role\_name](#input\_organization\_role\_name) | The role name that the workspace uses to access resources through Amazon Organizations | `string` | `null` | no |
 | <a name="input_organizational_units"></a> [organizational\_units](#input\_organizational\_units) | The Amazon Organizations organizational units that the workspace is authorized to use data sources from | `list(string)` | `[]` | no |
 | <a name="input_permission_type"></a> [permission\_type](#input\_permission\_type) | The permission type of the workspace. If `SERVICE_MANAGED` is specified, the IAM roles and IAM policy attachments are generated automatically. If `CUSTOMER_MANAGED` is specified, the IAM roles and IAM policy attachments will not be created | `string` | `"CUSTOMER_MANAGED"` | no |
+| <a name="input_region"></a> [region](#input\_region) | The AWS region where resources will be created; if omitted the default provider region is used | `string` | `null` | no |
 | <a name="input_role_association"></a> [role\_association](#input\_role\_association) | List of user/group IDs to assocaite to a role | <pre>list(object({<br/>    group_ids = optional(list(string))<br/>    role      = string<br/>    user_ids  = optional(list(string))<br/>  }))</pre> | `[]` | no |
 | <a name="input_saml_configuration"></a> [saml\_configuration](#input\_saml\_configuration) | The SAML configuration for the workspace | <pre>object({<br/>    admin_role_values       = optional(list(string))<br/>    allowed_organizations   = optional(list(string))<br/>    editor_role_values      = list(string)<br/>    email_assertion         = optional(string)<br/>    groups_assertion        = optional(string)<br/>    idp_metadata_url        = optional(string)<br/>    idp_metadata_xml        = optional(string)<br/>    login_assertion         = optional(string)<br/>    login_validity_duration = optional(number)<br/>    name_assertion          = optional(string)<br/>    org_assertion           = optional(string)<br/>    role_assertion          = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources | `map(string)` | `{}` | no |
