@@ -106,6 +106,12 @@ variable "permission_type" {
   }
 }
 
+variable "region" {
+  type        = string
+  default     = null
+  description = "The AWS region where resources will be created; if omitted the default provider region is used"
+}
+
 variable "role_association" {
   type = list(object({
     group_ids = optional(list(string))
