@@ -68,7 +68,9 @@ data "aws_iam_policy_document" "default" {
 module "execution_role" {
   count = local.create_iam_role ? 1 : 0
 
-  source                = "github.com/schubergphilis/terraform-aws-mcaf-role?ref=v0.4.0"
+  source  = "schubergphilis/mcaf-role/aws"
+  version = "~> 0.5.3"
+
   name                  = "GrafanaExecution-${var.name}"
   create_policy         = true
   policy_arns           = [for i, v in var.data_sources : local.data_source_iam_policies[v]]
