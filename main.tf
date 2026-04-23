@@ -3,6 +3,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_grafana_role_association" "default" {
   for_each = { for i, v in var.role_association : v.role => v }
 
+  region       = var.region
   group_ids    = each.value.group_ids
   role         = each.value.role
   user_ids     = each.value.user_ids
@@ -10,6 +11,7 @@ resource "aws_grafana_role_association" "default" {
 }
 
 resource "aws_grafana_workspace" "default" {
+  region                    = var.region
   account_access_type       = var.account_access_type
   authentication_providers  = var.authentication_providers
   configuration             = var.configuration
@@ -46,6 +48,7 @@ resource "aws_grafana_workspace" "default" {
 resource "aws_grafana_workspace_api_key" "default" {
   for_each = { for i, v in var.workspace_api_key : v.name => v }
 
+  region          = var.region
   key_name        = each.value.name
   key_role        = each.value.role
   seconds_to_live = each.value.seconds_to_live
@@ -55,6 +58,7 @@ resource "aws_grafana_workspace_api_key" "default" {
 resource "aws_grafana_workspace_saml_configuration" "default" {
   count = var.saml_configuration != null ? 1 : 0
 
+  region                  = var.region
   admin_role_values       = var.saml_configuration.admin_role_values
   allowed_organizations   = var.saml_configuration.allowed_organizations
   editor_role_values      = var.saml_configuration.editor_role_values
