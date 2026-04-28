@@ -2,12 +2,14 @@ locals {
   create_iam_role = var.iam_role_arn == null && var.permission_type == "CUSTOMER_MANAGED" ? true : false
 
   data_source_iam_policies = {
-    ATHENA     = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaAthenaAccess"
-    CLOUDWATCH = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaCloudWatchAccess"
-    REDSHIFT   = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaRedshiftAccess"
-    SITEWISE   = "arn:aws:iam::aws:policy/service-role/AWSIoTSiteWiseReadOnlyAccess"
-    TIMESTREAM = "arn:aws:iam::aws:policy/AmazonTimestreamReadOnlyAccess"
-    XRAY       = "arn:aws:iam::aws:policy/AWSXrayReadOnlyAccess"
+    AMAZON_OPENSEARCH_SERVICE = null
+    ATHENA                    = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaAthenaAccess"
+    CLOUDWATCH                = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaCloudWatchAccess"
+    PROMETHEUS                = null
+    REDSHIFT                  = "arn:aws:iam::aws:policy/service-role/AmazonGrafanaRedshiftAccess"
+    SITEWISE                  = "arn:aws:iam::aws:policy/service-role/AWSIoTSiteWiseReadOnlyAccess"
+    TIMESTREAM                = "arn:aws:iam::aws:policy/AmazonTimestreamReadOnlyAccess"
+    XRAY                      = "arn:aws:iam::aws:policy/AWSXrayReadOnlyAccess"
   }
 }
 
@@ -73,7 +75,7 @@ module "execution_role" {
 
   name                  = "GrafanaExecution-${var.name}"
   create_policy         = true
-  policy_arns           = [for i, v in var.data_sources : local.data_source_iam_policies[v]]
+  policy_arns           = compact([for i, v in var.data_sources : local.data_source_iam_policies[v]])
   principal_type        = "Service"
   principal_identifiers = ["grafana.amazonaws.com"]
   role_policy           = data.aws_iam_policy_document.default[0].json
